@@ -58,9 +58,9 @@ const Users = [new User("Viktor"), new User("Brian")]
 
 
 const Items = [
-    new Item(0,"Hammer","A good hammer for hitting nails","Brain"),
+    new Item(0,"Hammer","A good hammer for hitting nails","Brian"),
     new Item(1,"Car","nasty old car","Brain"),
-    new Item(2,"vacuumcleaner","You can clean ur house with it","Brain")
+    new Item(2,"vacuumcleaner","You can clean ur house with it","Brian")
 ]
 
 
@@ -77,13 +77,16 @@ router.all('/', (req, res, next) => {
 	res.end()
 })
 
+router.get('/items', AuthUserToken, (req, res, next) => {
 
-router.post('/create', AuthUserToken, (req, res, next) => {
-	res.cookie('user', 'viktor')
 	res.json({ 
-		test: '123',
-		data: req.decodedToken
+		items: Items
 	})
+})
+
+router.post('/items', AuthUserToken, (req, res, next) => {
+
+	res.json(items)
 })
 
 

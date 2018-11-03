@@ -7,11 +7,11 @@ import { AuthUserToken } from '../JWTprotectionMiddleware'
 const router = express.Router()
 
 const Item = class {
-	constructor(id, itemName, info, lender, borrower, requestsForItem, isAvailable) {
-		this.id =  0
+	constructor(id, itemName, info, lender) {
+		this.id =  id
 		this.itemName = itemName
-		this.info = ""
-		this.lender = ""
+		this.info = info
+		this.lender = lender
 		this.borrower = null
 		this.requestsForItem = []
 		this.isAvailable = true
@@ -33,16 +33,35 @@ const Item = class {
 
 const id = 0
 
-const User = {
-	"name": "Viktor",
-	"ListOfItemsYouLend": [id],
-	"ListOfItemsBorrowed": [id]
+const User = class {
+    constructor(name) {
+        this.name = name
+        this.ListOfItemsBorrowed = []
+        this.ListOfItemsYouLend = []
+    }
+    addItemToYourLendList(item) {
+        this.ListOfItemsYouLend.push(item)
+    }
+    addItemToYourBorrowedList(item, lender) {
+        item.isAvailable = false
+        item.lender = lender
+        item.borrower = this.name
+        this.ListOfItemsBorrowed.push(item)
+    }
 }
 
-const Items = [Item]
 
 
 
+
+const Users = [new User("Viktor"), new User("Brian")]
+
+
+const Items = [
+    new Item(0,"Hammer","A good hammer for hitting nails","Brain"),
+    new Item(1,"Car","nasty old car","Brain"),
+    new Item(2,"vacuumcleaner","You can clean ur house with it","Brain")
+]
 
 
 router.all('/', (req, res, next) => {
